@@ -1,0 +1,96 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\FrozenVideo\KITV211012235232.jpg" />
+    <None Remove="Images\FrozenVideo\KITV211012235242.jpg" />
+    <None Remove="Images\FrozenVideo\KITV211012235252.jpg" />
+    <None Remove="Images\FrozenVideo\KITV211012235302.jpg" />
+    <None Remove="Images\FrozenVideo\KITV211012235312.jpg" />
+    <None Remove="Images\FrozenVideo\KITV211012235322.jpg" />
+    <None Remove="Images\FrozenVideo\KITV211012235332.jpg" />
+    <None Remove="Images\GrayScaleImages\GrayScaleDog.png" />
+    <None Remove="Images\NonIdenticalImages\DifferentSize\Large.png" />
+    <None Remove="Images\NonIdenticalImages\DifferentSize\Small.png" />
+    <None Remove="Images\IdenticalImages\DifferentSize\Image1.png" />
+    <None Remove="Images\IdenticalImages\DifferentSize\Image2.png" />
+    <None Remove="Images\IdenticalImages\Image1.bmp" />
+    <None Remove="Images\IdenticalImages\Image2.bmp" />
+    <None Remove="Images\NonIdenticalImages\Black.png" />
+    <None Remove="Images\NonIdenticalImages\White.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\FrozenVideo\KITV211012235232.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FrozenVideo\KITV211012235242.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FrozenVideo\KITV211012235252.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FrozenVideo\KITV211012235302.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FrozenVideo\KITV211012235312.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FrozenVideo\KITV211012235322.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\FrozenVideo\KITV211012235332.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\GrayScaleImages\GrayScaleDog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NonIdenticalImages\DifferentSize\Large.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NonIdenticalImages\DifferentSize\Small.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdenticalImages\DifferentSize\Image1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdenticalImages\DifferentSize\Image2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdenticalImages\SameSize\Image1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdenticalImages\SameSize\Image2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NonIdenticalImages\SameSize\Black.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NonIdenticalImages\SameSize\White.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ImageAnalyzer\ImageAnalyzer.csproj" />
+  </ItemGroup>
+
+</Project>
