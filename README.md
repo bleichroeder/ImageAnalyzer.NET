@@ -8,6 +8,9 @@ A library of image analysis and image comparison tools.
 Allows for the analysis of collections of ImageComparisons.\
 Can be used for detecting issues in video such as frozen images, or black/blue screens by generating thumbnails and performing an analysis chronologically.
 ```csharp
+using ImageAnalyzer.Models;
+using ImageAnalyzer.Tools;
+
 // Our collection of thumbnails ordered chronologically
 string[] images = Directory.EnumerateFiles(Path.Combine("Images", "FrozenVideo")).ToArray();
 
@@ -57,6 +60,9 @@ Assert.True(comparison.DifferencePercentage == 0);
 #### Basic image resizing and comparison
 The ImageData class provides a simple method for resizing images before performing comparisons/analyses
 ```csharp
+using ImageAnalyzer.Models;
+using ImageAnalyzer.Tools;
+
 // Load our two identical test images of different sizing
 Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image1.png"));
 Bitmap image2 = (Bitmap)Image.FromFile(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image2.png"));
@@ -77,6 +83,9 @@ Assert.True(comparison.DifferencePercentage == 0);
 #### GrayScale detection
 The ImageData class provides a simple method for GrayScale detection
 ```csharp
+using ImageAnalyzer.Models;
+using ImageAnalyzer.Tools;
+
 Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "GrayScaleImages", "GrayScaleDog.png"));
 
 // Create a new ImageData using our GrayScaleDog.png
