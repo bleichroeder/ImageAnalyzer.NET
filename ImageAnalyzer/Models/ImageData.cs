@@ -33,6 +33,18 @@ namespace ImageAnalyzer.Models
         }
 
         /// <summary>
+        /// Represents the images normalized value between 0.0 and 1.0.<br />
+        /// Used for image comparisons.
+        /// </summary>
+        public float NormalizedValue
+        {
+            get
+            {
+                return ReturnImageValue();
+            }
+        }
+
+        /// <summary>
         /// Accepts a Bitmap image and provides image analysis tools.<br />
         /// Provides the ability to perform image comparisons using the ImageComparison class.
         /// </summary>
@@ -53,6 +65,44 @@ namespace ImageAnalyzer.Models
         public void Resize(Size size)
         {
             Image = new Bitmap(Image, size);
+        }
+
+        private unsafe float ReturnImageValue()
+        {
+            try
+            {
+                float retVal = 0;
+                int bytesPerPixel = 3;
+
+                Rectangle rec1 = new(0, 0, Image.Width, Image.Height);
+
+                BitmapData ImageData = Image.LockBits(rec1, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+                for (int y = 0; y < ImageData.Height; y++)
+                {
+                    byte* ImageRow = (byte*)ImageData.Scan0.ToPointer() + (y * ImageData.Stride);
+
+                    for (int x = 0; x < ImageData.Width; x++)
+                    {
+                        int bIndex = x * bytesPerPixel;
+                        int gIndex = bIndex + 1;
+                        int rIndex = bIndex + 2;
+
+                        retVal += Math.Abs(ImageRow[rIndex]);
+                        retVal += Math.Abs(ImageRow[gIndex]);
+                        retVal += Math.Abs(ImageRow[bIndex]);
+                    }
+                }
+
+                Image.UnlockBits(ImageData);
+
+                return (retVal / 255) / (Image.Width * Image.Height * bytesPerPixel);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
         }
 
         private unsafe bool GrayScale()

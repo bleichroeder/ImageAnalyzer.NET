@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>ImageAnalyzer.NET</PackageId>
+    <Authors>blcdr</Authors>
+    <Product>ImageAnalyzer.NET</Product>
+    <Description>.NET core library for image analysis and comparison.</Description>
+    <RepositoryUrl>https://github.com/bleichroeder/ImageAnalyzer.NET.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/bleichroeder/ImageAnalyzer.NET</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

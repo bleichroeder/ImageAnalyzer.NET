@@ -16,5 +16,15 @@ namespace ImageAnalyzer.Tests
 
             Assert.True(imageData.IsGrayScale);
         }
+
+        [Fact]
+        public void Return_Image_Data_Value()
+        {
+            Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "NonIdenticalImages", "SameSize", "White.png"));
+
+            ImageData imageData = new(image1);
+
+            Assert.True(imageData.NormalizedValue >= 1.0);
+        }
     }
 }
