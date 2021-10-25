@@ -51,5 +51,18 @@ namespace ImageAnalyzer.Tests
 
             Assert.True(consecutive.Length.Equals(consecutiveMinimum));
         }
+
+
+        [Fact]
+        public void Comparison_Analysis()
+        {
+            // Get all of the images we need for analysis
+            var images = Directory.EnumerateFiles(Path.Combine("Images", "FrozenVideo")).ToList();
+
+            // Create an empty list of comparisons
+            List<ImageData> imageDatas = new();
+
+            images.ForEach(x => imageDatas.Add(new ImageData(x)));
+        }
     }
 }

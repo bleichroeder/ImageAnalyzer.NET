@@ -1,7 +1,5 @@
 using ImageAnalyzer.Models;
-using ImageAnalyzer.Tools;
 using System;
-using System.Drawing;
 using System.IO;
 using Xunit;
 
@@ -9,66 +7,69 @@ namespace ImageAnalyzer.Tests
 {
     public class ImageCompare
     {
+
         [Fact]
         public void Compare_IdenticalContent_Images_SameSize_Returns_0()
         {
-            // Load our two identical test images
-            Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "IdenticalImages", "SameSize", "Image1.png"));
-            Bitmap image2 = (Bitmap)Image.FromFile(Path.Combine("Images", "IdenticalImages", "SameSize", "Image2.png"));
+            ImageData image1 = new(Path.Combine("Images", "IdenticalImages", "SameSize", "Image1.png"));
+            ImageData image2 = new(Path.Combine("Images", "IdenticalImages", "SameSize", "Image2.png"));
 
-            ImageComparison comparison = new(new ImageData(image1), new ImageData(image2));
-
-            Assert.True(comparison.DifferencePercentage == 0);
+            Assert.True(image1.Difference(image2) == 0);
         }
 
         [Fact]
-        public void Compare_NonIdenticalContent_Images_SameSize_Returns_100Plus()
+        public void Compare_Flipped_Identical_Images_Returns_GT_0()
         {
-            // Load our two non-identical test images
-            Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "NonIdenticalImages", "SameSize", "Black.png"));
-            Bitmap image2 = (Bitmap)Image.FromFile(Path.Combine("Images", "NonIdenticalImages", "SameSize", "White.png"));
+            ImageData image1 = new(Path.Combine("Images", "IdenticalImages", "Flipped", "Up.png"));
+            ImageData image2 = new(Path.Combine("Images", "IdenticalImages", "Flipped", "Down.png"));
 
-            ImageComparison comparison = new(new ImageData(image1), new ImageData(image2));
+            Assert.True(image1.Difference(image2) > 0);
+        }
 
-            Assert.True(comparison.DifferencePercentage >= 100);
+        [Fact]
+        public void Compare_NonIdenticalContent_Images_SameSize_Returns_GT_100()
+        {
+            ImageData image1 = new(Path.Combine("Images", "NonIdenticalImages", "SameSize", "Black.png"));
+            ImageData image2 = new(Path.Combine("Images", "NonIdenticalImages", "SameSize", "White.png"));
+
+            Assert.True(image1.Difference(image2) >= 100);
         }
 
         [Fact]
         public void Compare_IdenticalContent_Images_DifferentSize_Returns_0()
         {
-            // Load our two identical test images
-            Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image1.png"));
-            Bitmap image2 = (Bitmap)Image.FromFile(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image2.png"));
+            ImageData imageData1 = new(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image1.png"));
+            ImageData imageData2 = new(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image2.png"));
 
-            ImageData imageData1 = new(image1);
-            ImageData imageData2 = new(image2);
-
-            // resize imagedata2
-            imageData2.Resize(new Size(imageData1.Image.Width, imageData1.Image.Height));
-
-            // compare
-            ImageComparison comparison = new(imageData1, imageData2);
-
-            Assert.True(comparison.DifferencePercentage == 0);
+            Assert.True(imageData1.Difference(imageData2, true) == 0);
         }
 
         [Fact]
-        public void Compare_NonIdenticalContent_Images_DifferentSize_Returns_()
+        public void Compare_NonIdenticalContent_Images_DifferentSize()
         {
-            // Load our two identical test images
-            Bitmap image1 = (Bitmap)Image.FromFile(Path.Combine("Images", "NonIdenticalImages", "DifferentSize", "Large.png"));
-            Bitmap image2 = (Bitmap)Image.FromFile(Path.Combine("Images", "NonIdenticalImages", "DifferentSize", "small.png"));
+            ImageData imageData1 = new(Path.Combine("Images", "NonIdenticalImages", "DifferentSize", "Large.png"));
+            ImageData imageData2 = new(Path.Combine("Images", "NonIdenticalImages", "DifferentSize", "small.png"));
 
-            ImageData imageData1 = new(image1);
-            ImageData imageData2 = new(image2);
+            // Compare and resize
+            float difference = imageData1.Difference(imageData2, true);
 
-            // resize imagedata2
-            imageData2.Resize(new Size(imageData1.Image.Width, imageData1.Image.Height));
+            Assert.True(difference - 4.184278f <= Math.Abs(difference * .0001f));
+        }
 
-            // compare
-            ImageComparison comparison = new(imageData1, imageData2);
+        [Fact]
+        public void Compare_Images_Different_Sizes_Throws_Exception()
+        {
+            try
+            {
+                ImageData imageData1 = new(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image1.png"));
+                ImageData imageData2 = new(Path.Combine("Images", "IdenticalImages", "DifferentSize", "Image2.png"));
 
-            Assert.True(comparison.DifferencePercentage - 4.184278f <= Math.Abs(comparison.DifferencePercentage * .0001f));
+                imageData1.Difference(imageData2);
+            }
+            catch
+            {
+                Assert.True(true);
+            }
         }
     }
 }

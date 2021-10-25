@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Net;
 
 namespace ImageAnalyzer.Models
 {
@@ -12,7 +14,7 @@ namespace ImageAnalyzer.Models
         /// <summary>
         /// Optional: Allows for setting the image's path.
         /// </summary>
-        public string ImagePath { get; set; }
+        public string ImageName { get; set; }
         /// <summary>
         /// Optional: Allows for setting the image's DateTime.
         /// </summary>
@@ -45,17 +47,45 @@ namespace ImageAnalyzer.Models
         }
 
         /// <summary>
-        /// Accepts a Bitmap image and provides image analysis tools.<br />
-        /// Provides the ability to perform image comparisons using the ImageComparison class.
+        /// Loads a Bitmap image into a ImageData object.
+        /// Holds image data such as normalized value and provides basic analysis methods.
         /// </summary>
         /// <param name="image">The Bitmap image.</param>
         /// <param name="imageDateTime">Optional: The image's DateTime.</param>
-        /// <param name="imagePath">Optional: The image's path.</param>
-        public ImageData(Bitmap image, DateTime imageDateTime = default, string imagePath = null)
+        /// <param name="imageName">Optional: The image's name.</param>
+        public ImageData(Bitmap image, DateTime imageDateTime = default, string imageName = null)
         {
             Image = image;
             ImageDateTime = imageDateTime;
-            ImagePath = imagePath;
+            ImageName = imageName;
+        }
+
+        /// <summary>
+        /// Loads a Bitmap image into a ImageData object from a Uri.
+        /// Holds image data such as normalized value and provides basic analysis methods.
+        /// </summary>
+        /// <param name="imageUri"></param>
+        /// <param name="imageDateTime"></param>
+        /// <param name="imageName"></param>
+        public ImageData(Uri imageUri, DateTime imageDateTime = default, string imageName = null)
+        {
+            LoadBitmapFromUri(imageUri);
+            ImageDateTime = imageDateTime;
+            ImageName = imageName;
+        }
+
+        /// <summary>
+        /// Loads a Bitmap image into a ImageData object from a file path.
+        /// Holds image data such as normalized value and provides basic analysis methods.
+        /// </summary>
+        /// <param name="imagePath"></param>
+        /// <param name="imageDateTime"></param>
+        /// <param name="imageName"></param>
+        public ImageData(string imagePath, DateTime imageDateTime = default, string imageName = null)
+        {
+            LoadBitmapFromFile(imagePath);
+            ImageDateTime = imageDateTime;
+            ImageName = imageName;
         }
 
         /// <summary>
@@ -65,6 +95,59 @@ namespace ImageAnalyzer.Models
         public void Resize(Size size)
         {
             Image = new Bitmap(Image, size);
+        }
+
+        /// <summary>
+        /// Returns percent of change between this image and another image.
+        /// Can resize the second image to match the size of this image.
+        /// </summary>
+        /// <param name="imageData"></param>
+        /// <returns></returns>
+        public float Difference(ImageData imageData, bool resize = false)
+        {
+            if (resize)
+                imageData.Resize(Image.Size);
+
+            if (!Image.Size.Equals(imageData.Image.Size))
+            {
+                throw new Exception("Failed to perform comparison, images are of different sizes. Resize images or specify resize during comparison.");
+            }
+
+            return Math.Abs(100 * (imageData.NormalizedValue - NormalizedValue));
+        }
+
+        /// <summary>
+        /// Load a Bitmap into this ImageData from a Uri.
+        /// </summary>
+        /// <param name="uri"></param>
+        private void LoadBitmapFromUri(Uri uri)
+        {
+            try
+            {
+                using WebClient wc = new();
+                using Stream s = wc.OpenRead(uri);
+                Image = new Bitmap(s);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Load a Bitmap into this ImageData from a file path.
+        /// </summary>
+        /// <param name="path"></param>
+        private void LoadBitmapFromFile(string path)
+        {
+            try
+            {
+                Image = (Bitmap)System.Drawing.Image.FromFile(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         private unsafe float ReturnImageValue()
@@ -107,32 +190,40 @@ namespace ImageAnalyzer.Models
 
         private unsafe bool GrayScale()
         {
-            using (var bmp = new Bitmap(Image.Width, Image.Height, PixelFormat.Format32bppArgb))
+            try
             {
-                using (var g = Graphics.FromImage(bmp))
+                using (var bmp = new Bitmap(Image.Width, Image.Height, PixelFormat.Format32bppArgb))
                 {
-                    g.DrawImage(Image, 0, 0);
-                }
-
-                var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
-
-                var pt = (int*)data.Scan0;
-                var res = true;
-
-                for (var i = 0; i < data.Height * data.Width; i++)
-                {
-                    var color = Color.FromArgb(pt[i]);
-
-                    if (color.A != 0 && (color.R != color.G || color.G != color.B))
+                    using (var g = Graphics.FromImage(bmp))
                     {
-                        res = false;
-                        break;
+                        g.DrawImage(Image, 0, 0);
                     }
+
+                    var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+
+                    var pt = (int*)data.Scan0;
+                    var res = true;
+
+                    for (var i = 0; i < data.Height * data.Width; i++)
+                    {
+                        var color = Color.FromArgb(pt[i]);
+
+                        if (color.A != 0 && (color.R != color.G || color.G != color.B))
+                        {
+                            res = false;
+                            break;
+                        }
+                    }
+
+                    bmp.UnlockBits(data);
+
+                    return res;
                 }
-
-                bmp.UnlockBits(data);
-
-                return res;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
             }
         }
     }

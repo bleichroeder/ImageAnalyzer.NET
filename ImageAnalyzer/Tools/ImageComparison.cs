@@ -1,4 +1,5 @@
 ﻿using ImageAnalyzer.Models;
+using System;
 
 namespace ImageAnalyzer.Tools
 {
@@ -45,7 +46,7 @@ namespace ImageAnalyzer.Tools
 
         private float ReturnDifferencePercentage()
         {
-            return 100 * (Image2.NormalizedValue - Image1.NormalizedValue);
+            return Math.Abs(100 * (Image2.NormalizedValue - Image1.NormalizedValue));
         }
     }
 }

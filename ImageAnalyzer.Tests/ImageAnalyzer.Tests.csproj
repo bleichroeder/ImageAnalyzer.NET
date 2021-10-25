@@ -15,6 +15,8 @@
     <None Remove="Images\FrozenVideo\KITV211012235322.jpg" />
     <None Remove="Images\FrozenVideo\KITV211012235332.jpg" />
     <None Remove="Images\GrayScaleImages\GrayScaleDog.png" />
+    <None Remove="Images\IdenticalImages\Flipped\Down.png" />
+    <None Remove="Images\IdenticalImages\Flipped\Up.png" />
     <None Remove="Images\NonIdenticalImages\DifferentSize\Large.png" />
     <None Remove="Images\NonIdenticalImages\DifferentSize\Small.png" />
     <None Remove="Images\IdenticalImages\DifferentSize\Image1.png" />
@@ -48,6 +50,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\GrayScaleImages\GrayScaleDog.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdenticalImages\Flipped\Up.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdenticalImages\Flipped\Down.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\NonIdenticalImages\DifferentSize\Large.png">
