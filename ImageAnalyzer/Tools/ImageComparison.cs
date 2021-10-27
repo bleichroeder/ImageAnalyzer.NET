@@ -1,5 +1,4 @@
-﻿using ImageAnalyzer.Models;
-using System;
+﻿using System;
 
 namespace ImageAnalyzer.Tools
 {

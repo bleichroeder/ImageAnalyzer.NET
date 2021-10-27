@@ -1,6 +1,4 @@
-using ImageAnalyzer.Models;
 using ImageAnalyzer.Tools;
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -29,7 +27,7 @@ namespace ImageAnalyzer.Tests
             // Create new image comparisons using groups of images
             for (int i = 1; i < images.Length; i++)
             {
-                ImageData a = new ((Bitmap)Image.FromFile(images[i - 1]));
+                ImageData a = new((Bitmap)Image.FromFile(images[i - 1]));
                 ImageData b = new((Bitmap)Image.FromFile(images[i]));
 
                 comparisons.Add(new ImageComparison(a, b));
@@ -58,11 +56,33 @@ namespace ImageAnalyzer.Tests
         {
             // Get all of the images we need for analysis
             var images = Directory.EnumerateFiles(Path.Combine("Images", "FrozenVideo")).ToList();
-
-            // Create an empty list of comparisons
             List<ImageData> imageDatas = new();
-
             images.ForEach(x => imageDatas.Add(new ImageData(x)));
+
+            List<ImageData> issues = new(); // Initialize empty list of ImageData
+
+            int issueCount = 0;
+            int neededToReturn = 3; // Set the number of images needed to return
+            float issueThreshold = 1.0f;
+
+            for(int i = 1; i < imageDatas.Count; i++)
+            {
+                if(imageDatas[i - 1].Difference(imageDatas[i]) < issueThreshold)
+                {
+                    issues.Add(imageDatas[i - 1]);
+
+                    issueCount++;
+
+                    if(issueCount >= neededToReturn)
+                    {
+                        Assert.True(true);
+                    }
+                }
+                else
+                {
+                    issueCount = 0;
+                }
+            }
         }
     }
 }

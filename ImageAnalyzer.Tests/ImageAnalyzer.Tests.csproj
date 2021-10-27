@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\EdgeDetection\Sobel\Filtered.jpg" />
+    <None Remove="Images\EdgeDetection\Sobel\Raw.jpg" />
     <None Remove="Images\FrozenVideo\KITV211012235232.jpg" />
     <None Remove="Images\FrozenVideo\KITV211012235242.jpg" />
     <None Remove="Images\FrozenVideo\KITV211012235252.jpg" />
@@ -28,6 +30,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\EdgeDetection\Sobel\Filtered.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\EdgeDetection\Sobel\Raw.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\FrozenVideo\KITV211012235232.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
