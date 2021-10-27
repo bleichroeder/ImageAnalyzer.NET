@@ -27,6 +27,27 @@ bool isGrayScale = imageData.IsGrayScale;
 
 ```
 
+### Filters
+#### Edge Detection
+Applying the Sobel Operator filter.\
+Here we have a pre-filtered image of an engine.\
+<img src="https://github.com/bleichroeder/ImageAnalyzer.NET/blob/main/ImageAnalyzer.Tests/Images/EdgeDetection/Sobel/Raw.jpg?raw=true" alt="drawing" width="500"/>
+```csharp
+using ImageAnalyzer.Extensions.Filters;
+
+ImageData image1 = new(Path.Combine("Images", "EdgeDetection", "Sobel", "Raw.jpg"));
+image1.ApplySobelFilter();
+```
+After the filter has been applied...\
+<img src="https://github.com/bleichroeder/ImageAnalyzer.NET/blob/main/ImageAnalyzer.Tests/Images/EdgeDetection/Sobel/Filtered.jpg?raw=true" alt="drawing" width="500"/>
+#### GrayScale
+```csharp
+using ImageAnalyzer.Extensions.Filters;
+
+ImageData image1 = new(Path.Combine("Images", "EdgeDetection", "Sobel", "Raw.jpg"));
+image1.ConvertToGrayScale();
+```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
